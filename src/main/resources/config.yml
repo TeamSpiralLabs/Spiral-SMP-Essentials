@@ -5,6 +5,7 @@
 # Modules (Enable / Disable commands or systems)
 modules:
   backups: true
+  rtp: true
   tpa: true
   home: true
   hub: true
@@ -18,17 +19,26 @@ server-name: "Server Name"
 
 # How long in seconds should a player wait before using a command again
 command-cooldowns:
+  rtp: 120
   home: 5
   hub: 5
 
-  # How long in seconds is the warmup before the command executes
+# How long in seconds is the warmup before the command executes
 command-warmups:
+  rtp: 5
   home: 5
   hub: 5
 
 # Combat Log Settings
 # How long in seconds should commands be disabled after a player takes damage
 combat-cooldown-seconds: 10
+
+# RTP Settings
+rtp:
+  # The minimum distance from 0,0 the player can be teleported
+  min-radius: 500
+  # The maximum distance from 0,0 the player can be teleported
+  max-radius: 5000
 
 # TPA Settings
 # How long in seconds before a TPA request expires

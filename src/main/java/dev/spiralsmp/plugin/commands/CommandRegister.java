@@ -22,6 +22,10 @@ public class CommandRegister {
 
         // Core commands
         commands.add(new CoreCommand(plugin));
+        commands.add(new MuteCommand());
+        commands.add(new UnmuteCommand());
+        commands.add(new WarnCommand());
+        commands.add(new TempBanCommand());
 
         if (plugin.getConfig().getBoolean("modules.hub", true)) {
             commands.add(new HubCommand());
@@ -29,6 +33,10 @@ public class CommandRegister {
 
         if (plugin.getConfig().getBoolean("modules.home", true)) {
             commands.add(new HomeCommand());
+        }
+
+        if (plugin.getConfig().getBoolean("modules.rtp", true)) {
+            commands.add(new RtpCommand(plugin));
         }
 
         if (tpaManager != null) {
