@@ -1,0 +1,6 @@
+name: Spiral-SMP-Essentials
+version: "${project.version}"
+main: dev.spiralsmp.plugin.Main
+api-version: "26.1"
+description: Make your SMP's fun and easier while still keeping the vanilla feel
+authors: [TeamSpiralLabs]
