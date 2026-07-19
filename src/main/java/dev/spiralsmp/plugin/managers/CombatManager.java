@@ -103,7 +103,13 @@ public class CombatManager implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        combatLog.remove(event.getPlayer().getUniqueId());
+        Player player = event.getPlayer();
+
+        // check if in combat before quit
+        if (isInCombat(player)) {
+            player.setHealth(0.0);
+        }
+        combatLog.remove(player.getUniqueId());
     }
 
     private void tag(Player player) {
