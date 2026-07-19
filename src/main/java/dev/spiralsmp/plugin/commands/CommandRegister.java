@@ -20,8 +20,8 @@ public class CommandRegister {
 
         List<SpiralCommand> commands = new ArrayList<>();
 
-        // Help command is core and always enabled
-        commands.add(new HelpCommand());
+        // Core commands
+        commands.add(new CoreCommand(plugin));
 
         if (plugin.getConfig().getBoolean("modules.hub", true)) {
             commands.add(new HubCommand());

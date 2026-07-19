@@ -10,9 +10,12 @@ modules:
   hub: true
   combat-log: true
   tablist: true
-  end-blocker: true
+  end-blocker: false
+  nether-blocker: false
 
 # General Settings
+server-name: "Server Name"
+
 # How long in seconds should a player wait before using a command again
 command-cooldowns:
   home: 5

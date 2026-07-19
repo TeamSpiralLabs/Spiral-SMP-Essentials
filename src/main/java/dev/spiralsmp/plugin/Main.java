@@ -3,6 +3,7 @@ package dev.spiralsmp.plugin;
 import dev.spiralsmp.plugin.commands.CommandRegister;
 import dev.spiralsmp.plugin.commands.tpa.TpaManager;
 import dev.spiralsmp.plugin.events.EndBlockerListener;
+import dev.spiralsmp.plugin.events.NetherBlockerListener;
 import dev.spiralsmp.plugin.events.PlayerDeathListener;
 import dev.spiralsmp.plugin.events.PlayerQuitListener;
 import dev.spiralsmp.plugin.managers.BackupManager;
@@ -53,6 +54,11 @@ public class Main extends JavaPlugin {
         // 6. End Blocker
         if (getConfig().getBoolean("modules.end-blocker", false)) {
             getServer().getPluginManager().registerEvents(new EndBlockerListener(), this);
+        }
+
+        // 7. Nether Blocker
+        if (getConfig().getBoolean("modules.nether-blocker", false)) {
+            getServer().getPluginManager().registerEvents(new NetherBlockerListener(), this);
         }
 
         // Systems that are foundational and ALWAYS enabled

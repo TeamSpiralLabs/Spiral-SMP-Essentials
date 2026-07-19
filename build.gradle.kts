@@ -4,7 +4,7 @@ plugins {
 
 group = "dev.spiralsmp"
 version = "1.0.0"
-description = "Custom plugin for SpiralSMP"
+description = "Make your SMP's fun and easier while still keeping the vanilla feel"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(25))
