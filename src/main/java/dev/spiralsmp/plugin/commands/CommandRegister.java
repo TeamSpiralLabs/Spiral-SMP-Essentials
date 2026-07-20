@@ -26,6 +26,8 @@ public class CommandRegister {
         commands.add(new UnmuteCommand());
         commands.add(new WarnCommand());
         commands.add(new TempBanCommand());
+        commands.add(new PingCommand());
+        commands.add(new PlayertimeCommand());
 
         if (plugin.getConfig().getBoolean("modules.hub", true)) {
             commands.add(new HubCommand());
