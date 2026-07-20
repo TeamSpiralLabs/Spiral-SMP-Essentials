@@ -1,4 +1,4 @@
-package dev.spiralsmp.plugin.commands.tpa;
+package dev.spiralsmp.plugin.commands.teleport.tpa;
 
 import org.bukkit.scheduler.BukkitTask;
 

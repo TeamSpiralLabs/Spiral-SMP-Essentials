@@ -1,7 +1,13 @@
-package dev.spiralsmp.plugin.commands;
+package dev.spiralsmp.plugin.commands.teleport;
 
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.spiralsmp.plugin.Main;
+import dev.spiralsmp.plugin.commands.base.CommandInfo;
+import dev.spiralsmp.plugin.commands.base.SpiralCommand;
+import dev.spiralsmp.plugin.managers.CommandCooldownManager;
+import dev.spiralsmp.plugin.managers.WarmupManager;
+import dev.spiralsmp.plugin.utils.MessageUtil;
 import dev.spiralsmp.plugin.utils.SoundUtil;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
@@ -49,27 +55,29 @@ public class RtpCommand implements SpiralCommand {
         int minRadius = plugin.getConfig().getInt("rtp.min-radius", 500);
         int maxRadius = plugin.getConfig().getInt("rtp.max-radius", 5000);
 
-        player.sendMessage(Component.text("Teleporting you to a location...").color(NamedTextColor.YELLOW));
+        WarmupManager.getInstance().executeWithWarmup(player, getInfo().name(), "Searching for location", () -> {
 
-        findSafeLocation(player.getWorld(), minRadius, maxRadius).thenAccept(location -> {
-            if (location == null) {
-                player.sendMessage(Component.text("Could not find a safe location. Please try again.").color(NamedTextColor.RED));
-                SoundUtil.ERROR.play(player);
-                return;
-            }
-
-            player.teleportAsync(location).thenAccept(success -> {
-                if (success) {
-                    player.sendMessage(Component.text("You have been randomly teleported!").color(NamedTextColor.GREEN));
-                    SoundUtil.TICK.play(player);
-                } else {
-                    player.sendMessage(Component.text("Teleportation failed. Something went wrong.").color(NamedTextColor.RED));
+            findSafeLocation(player.getWorld(), minRadius, maxRadius).thenAccept(location -> {
+                if (location == null) {
+                    player.sendMessage(Component.text("Could not find a safe location. Please try again.").color(NamedTextColor.RED));
                     SoundUtil.ERROR.play(player);
+                    return;
                 }
+
+                player.teleportAsync(location).thenAccept(success -> {
+                    if (success) {
+                        SoundUtil.SUCCESS.play(player);
+                        MessageUtil.sendSuccessBar(player, "Randomly teleported!");
+                        CommandCooldownManager.getInstance().setCooldown(player, getInfo().name());
+                    } else {
+                        player.sendMessage(Component.text("Teleportation failed. Something went wrong.").color(NamedTextColor.RED));
+                        SoundUtil.ERROR.play(player);
+                    }
+                });
             });
         });
 
-        return 1;
+        return Command.SINGLE_SUCCESS;
     }
 
     private CompletableFuture<Location> findSafeLocation(World world, int min, int max) {

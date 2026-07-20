@@ -1,10 +1,12 @@
-package dev.spiralsmp.plugin.commands;
+package dev.spiralsmp.plugin.commands.general;
 
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.spiralsmp.plugin.Main;
+import dev.spiralsmp.plugin.commands.base.CommandInfo;
+import dev.spiralsmp.plugin.commands.base.SpiralCommand;
 import dev.spiralsmp.plugin.registry.CommandEntry;
 import dev.spiralsmp.plugin.registry.HelpRegistry;
 import dev.spiralsmp.plugin.utils.SoundUtil;
@@ -14,16 +16,16 @@ import io.papermc.paper.plugin.configuration.PluginMeta;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 @SuppressWarnings("UnstableApiUsage")
 @CommandInfo(
         name = "spiralsmp",
-        description = "Core command for Spiral SMP Essentials.",
-        aliases = {"spiral"}
+        description = "Core command for Spiral SMP Essentials."
 )
 public class CoreCommand implements SpiralCommand {
     private static final int COMMANDS_PER_PAGE = 6;
@@ -60,8 +62,26 @@ public class CoreCommand implements SpiralCommand {
                 // config
                 .then(Commands.literal("config")
                         .requires(ctx -> ctx.getSender().hasPermission("spiralsmp.admin"))
+                        .executes(ctx -> listModules(ctx.getSource()))
+
+                        // config list
+                        .then(Commands.literal("list")
+                                .executes(ctx -> listModules(ctx.getSource()))
+                        )
+
+                        // config module <name> <state>
                         .then(Commands.literal("module")
                                 .then(Commands.argument("moduleName", StringArgumentType.word())
+                                        .suggests((ctx, builder) -> {
+                                            // Dynamic Tab-Completion logic
+                                            String remaining = builder.getRemaining().toLowerCase();
+                                            for (String module : getModuleNames()) {
+                                                if (module.toLowerCase().startsWith(remaining)) {
+                                                    builder.suggest(module);
+                                                }
+                                            }
+                                            return builder.buildFuture();
+                                        })
                                         .then(Commands.argument("state", BoolArgumentType.bool())
                                                 .executes(ctx -> toggleModule(
                                                         ctx.getSource(),
@@ -72,6 +92,41 @@ public class CoreCommand implements SpiralCommand {
                                 )
                         )
                 );
+    }
+
+    private List<String> getModuleNames() {
+        ConfigurationSection section = plugin.getConfig().getConfigurationSection("modules");
+        if (section != null) {
+            return new ArrayList<>(section.getKeys(false));
+        }
+        return new ArrayList<>();
+    }
+
+    private int listModules(CommandSourceStack source) {
+        source.getSender().sendMessage(
+                Component.text("━━━ ").color(NamedTextColor.DARK_GRAY)
+                        .append(Component.text("Spiral SMP Modules").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD))
+                        .append(Component.text(" ━━━").color(NamedTextColor.DARK_GRAY))
+        );
+
+        ConfigurationSection section = plugin.getConfig().getConfigurationSection("modules");
+        if (section == null) {
+            source.getSender().sendMessage(Component.text("No modules found in config.yml.").color(NamedTextColor.RED));
+            return 0;
+        }
+
+        for (String key : section.getKeys(false)) {
+            boolean isEnabled = plugin.getConfig().getBoolean("modules." + key);
+            source.getSender().sendMessage(
+                    Component.text("• ").color(NamedTextColor.DARK_GRAY)
+                            .append(Component.text(key).color(NamedTextColor.YELLOW))
+                            .append(Component.text(" : ").color(NamedTextColor.DARK_GRAY))
+                            .append(Component.text(isEnabled ? "Enabled" : "Disabled").color(isEnabled ? NamedTextColor.GREEN : NamedTextColor.RED))
+            );
+        }
+
+        if (source.getSender() instanceof Player player) SoundUtil.TICK.play(player);
+        return 1;
     }
 
     private int reloadConfig(CommandSourceStack source) {

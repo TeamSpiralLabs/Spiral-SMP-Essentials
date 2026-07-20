@@ -1,10 +1,10 @@
-package dev.spiralsmp.plugin.commands.tpa;
+package dev.spiralsmp.plugin.commands.teleport.tpa;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import dev.spiralsmp.plugin.commands.CommandInfo;
-import dev.spiralsmp.plugin.commands.SpiralCommand;
+import dev.spiralsmp.plugin.commands.base.CommandInfo;
+import dev.spiralsmp.plugin.commands.base.SpiralCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;

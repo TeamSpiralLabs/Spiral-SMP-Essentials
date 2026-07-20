@@ -101,8 +101,10 @@ public class WarmupManager implements Listener {
         }
     }
 
-    @EventHandler
+@EventHandler
     public void onMove(PlayerMoveEvent event) {
+        if (!event.hasChangedPosition()) return;
+
         Player player = event.getPlayer();
         if (!activeTasks.containsKey(player.getUniqueId())) return;
 

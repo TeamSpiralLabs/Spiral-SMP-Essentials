@@ -2,22 +2,23 @@
 
 Make your Minecraft SMP's fun and easier while still keeping the vanilla feel.
 
+## Requirements
+
+- **Minecraft / Server Version:** Paper 26.1+
+- **Java:** Java 25
+- _Note: Fully compatible with Geyser and Floodgate._
+
+---
+
 ## Features
 
 - **Combat Logging:** Prevents players from running escape commands (like `/spawn` or `/tpa`) while in combat.
 - **Command Warmups & Cooldowns:** Fully configurable delays to commands.
 - **Automated Backups:** Zip your server's data at configurable intervals with a maximum retention limit.
 - **World Management:** Restrict access to the Nether and The End with simple toggles.
-- **Administration Tools:** `/warn`, `/mute`, `/unmute`, `/tempban`.
+- **AFK Management:** Automatically kicks players who are inactive for too long.
+- **Administration Tools:** `/warn`, `/warncount`, `/mute`, `/unmute`, `/tempban`.
 - **Teleportation:** `/tpa`, `/home`, `/hub`,`/rtp`.
-
----
-
-## Requirements
-
-- **Minecraft / Server Software:** Paper 26.1+
-- **Java:** Java 25
-- _Note: Fully compatible with Geyser and Floodgate._
 
 ---
 
@@ -29,6 +30,8 @@ Make your Minecraft SMP's fun and easier while still keeping the vanilla feel.
 | :---------------- | :------------------------------------ |
 | `/spiralsmp help` | View all available commands.          |
 | `/spiralsmp info` | View plugin version and details.      |
+| `/ping`           | Check your current latency.           |
+| `/playertime`     | Check your total playtime.            |
 | `/tpa <player>`   | Send a teleport request.              |
 | `/tpaccept`       | Accept a teleport request.            |
 | `/tpdeny`         | Deny a teleport request.              |
@@ -42,8 +45,10 @@ Make your Minecraft SMP's fun and easier while still keeping the vanilla feel.
 | Command                                        | Description                               | Permission               |
 | :--------------------------------------------- | :---------------------------------------- | :----------------------- |
 | `/spiralsmp reload`                            | Reload the `config.yml` into memory.      | `spiralsmp.admin`        |
+| `/spiralsmp config list`                       | View the status of all modules.           | `spiralsmp.admin`        |
 | `/spiralsmp config module <name> <true/false>` | Enable or disable modules in-game.        | `spiralsmp.admin`        |
 | `/warn <player> <reason>`                      | Send a massive warning title to a player. | `spiralsmp.warn.admin`   |
+| `/warncount <player>`                          | Check how many warnings a player has.     | `spiralsmp.warn.admin`   |
 | `/mute <player> [minutes]`                     | Mute a player permanently or temporarily. | `spiralsmp.mute.admin`   |
 | `/unmute <player>`                             | Remove a player's mute.                   | `spiralsmp.unmute.admin` |
 | `/tempban <player> <minutes> [reason]`         | Temporarily ban a player.                 | `spiralsmp.ban.admin`    |
@@ -67,6 +72,7 @@ modules:
   end-blocker: true
   nether-blocker: true
   rtp: true
+  afk-kicker: true
 
 # General Settings
 server-name: "Spiral SMP"
@@ -84,6 +90,10 @@ command-warmups:
 
 combat-cooldown-seconds: 10
 
+# AFK Settings
+afk:
+  kick-minutes: 15
+
 # RTP Settings
 rtp:
   min-radius: 500
@@ -99,4 +109,3 @@ tablist-update-interval-seconds: 5
 backup:
   interval-minutes: 240
   max-limit: 4
-```

@@ -68,7 +68,7 @@ public class CombatManager implements Listener {
                 } else {
                     long secondsLeft = ((cooldownMs - elapsed) / 1000) + 1;
                     player.sendActionBar(
-                            Component.text("⚔ In Combat ", NamedTextColor.RED)
+                            Component.text("In Combat ", NamedTextColor.RED)
                                     .append(Component.text(secondsLeft + "s", NamedTextColor.GOLD))
                     );
                     return false;

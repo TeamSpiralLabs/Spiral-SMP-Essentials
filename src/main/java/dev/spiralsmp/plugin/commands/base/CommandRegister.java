@@ -1,11 +1,20 @@
-package dev.spiralsmp.plugin.commands;
+package dev.spiralsmp.plugin.commands.base;
 
 import dev.spiralsmp.plugin.Main;
-import dev.spiralsmp.plugin.commands.tpa.TpAcceptCommand;
-import dev.spiralsmp.plugin.commands.tpa.TpCancelCommand;
-import dev.spiralsmp.plugin.commands.tpa.TpDenyCommand;
-import dev.spiralsmp.plugin.commands.tpa.TpaCommand;
-import dev.spiralsmp.plugin.commands.tpa.TpaManager;
+import dev.spiralsmp.plugin.commands.admin.*;
+import dev.spiralsmp.plugin.commands.backup.AutoBackupCommand;
+import dev.spiralsmp.plugin.commands.backup.BackupCommand;
+import dev.spiralsmp.plugin.commands.general.CoreCommand;
+import dev.spiralsmp.plugin.commands.general.PingCommand;
+import dev.spiralsmp.plugin.commands.general.PlayertimeCommand;
+import dev.spiralsmp.plugin.commands.teleport.HomeCommand;
+import dev.spiralsmp.plugin.commands.teleport.HubCommand;
+import dev.spiralsmp.plugin.commands.teleport.RtpCommand;
+import dev.spiralsmp.plugin.commands.teleport.tpa.TpAcceptCommand;
+import dev.spiralsmp.plugin.commands.teleport.tpa.TpCancelCommand;
+import dev.spiralsmp.plugin.commands.teleport.tpa.TpDenyCommand;
+import dev.spiralsmp.plugin.commands.teleport.tpa.TpaCommand;
+import dev.spiralsmp.plugin.commands.teleport.tpa.TpaManager;
 import dev.spiralsmp.plugin.managers.BackupManager;
 import dev.spiralsmp.plugin.registry.HelpRegistry;
 import io.papermc.paper.command.brigadier.Commands;
@@ -25,6 +34,7 @@ public class CommandRegister {
         commands.add(new MuteCommand());
         commands.add(new UnmuteCommand());
         commands.add(new WarnCommand());
+        commands.add(new WarnCountCommand());
         commands.add(new TempBanCommand());
         commands.add(new PingCommand());
         commands.add(new PlayertimeCommand());

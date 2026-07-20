@@ -1,14 +1,15 @@
-package dev.spiralsmp.plugin.commands;
+package dev.spiralsmp.plugin.commands.admin;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import dev.spiralsmp.plugin.commands.base.CommandInfo;
+import dev.spiralsmp.plugin.commands.base.SpiralCommand;
 import dev.spiralsmp.plugin.managers.WarnManager;
 import dev.spiralsmp.plugin.utils.SoundUtil;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -24,6 +25,15 @@ public class WarnCommand implements SpiralCommand {
         return Commands.literal(getInfo().name())
                 .requires(ctx -> ctx.getSender().hasPermission(getInfo().permission()))
                 .then(Commands.argument("target", StringArgumentType.word())
+                        .suggests((ctx, builder) -> {
+                            String remaining = builder.getRemaining().toLowerCase();
+                            for (Player p : Bukkit.getOnlinePlayers()) {
+                                if (p.getName().toLowerCase().startsWith(remaining)) {
+                                    builder.suggest(p.getName());
+                                }
+                            }
+                            return builder.buildFuture();
+                        })
                         .then(Commands.argument("reason", StringArgumentType.greedyString())
                                 .executes(ctx -> executeWarn(
                                         ctx.getSource(),
@@ -43,8 +53,7 @@ public class WarnCommand implements SpiralCommand {
 
         int totalWarns = WarnManager.getInstance().addWarn(target.getUniqueId());
 
-        target.sendMessage(Component.text("You have been warned! Reason: " + reason).color(NamedTextColor.RED));
-        target.sendMessage(Component.text("You now have " + totalWarns + " warning(s).").color(NamedTextColor.YELLOW));
+        target.sendMessage(Component.text("You have been warned! ").color(NamedTextColor.RED).append(Component.text("Reason: " + reason).color( NamedTextColor.WHITE)));
         SoundUtil.ERROR.play(target);
 
         source.getSender().sendMessage(

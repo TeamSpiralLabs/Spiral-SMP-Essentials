@@ -1,6 +1,6 @@
-package dev.spiralsmp.plugin.commands.tpa;
+package dev.spiralsmp.plugin.commands.teleport.tpa;
 
-import dev.spiralsmp.plugin.commands.CommandInfo;
+import dev.spiralsmp.plugin.commands.base.CommandInfo;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;

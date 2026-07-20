@@ -1,4 +1,4 @@
-package dev.spiralsmp.plugin.commands.tpa;
+package dev.spiralsmp.plugin.commands.teleport.tpa;
 
 import dev.spiralsmp.plugin.managers.CombatManager;
 import dev.spiralsmp.plugin.utils.MessageUtil;

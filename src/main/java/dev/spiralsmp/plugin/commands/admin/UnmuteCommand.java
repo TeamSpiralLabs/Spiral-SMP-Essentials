@@ -1,7 +1,9 @@
-package dev.spiralsmp.plugin.commands;
+package dev.spiralsmp.plugin.commands.admin;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import dev.spiralsmp.plugin.commands.base.CommandInfo;
+import dev.spiralsmp.plugin.commands.base.SpiralCommand;
 import dev.spiralsmp.plugin.managers.MuteManager;
 import dev.spiralsmp.plugin.utils.SoundUtil;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -23,6 +25,15 @@ public class UnmuteCommand implements SpiralCommand {
         return Commands.literal(getInfo().name())
                 .requires(ctx -> ctx.getSender().hasPermission(getInfo().permission()))
                 .then(Commands.argument("target", StringArgumentType.word())
+                        .suggests((ctx, builder) -> {
+                            String remaining = builder.getRemaining().toLowerCase();
+                            for (Player p : Bukkit.getOnlinePlayers()) {
+                                if (p.getName().toLowerCase().startsWith(remaining)) {
+                                    builder.suggest(p.getName());
+                                }
+                            }
+                            return builder.buildFuture();
+                        })
                         .executes(ctx -> executeUnmute(ctx.getSource(), StringArgumentType.getString(ctx, "target")))
                 );
     }

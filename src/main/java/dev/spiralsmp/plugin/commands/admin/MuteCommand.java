@@ -1,8 +1,10 @@
-package dev.spiralsmp.plugin.commands;
+package dev.spiralsmp.plugin.commands.admin;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import dev.spiralsmp.plugin.commands.base.CommandInfo;
+import dev.spiralsmp.plugin.commands.base.SpiralCommand;
 import dev.spiralsmp.plugin.managers.MuteManager;
 import dev.spiralsmp.plugin.utils.SoundUtil;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -24,6 +26,15 @@ public class MuteCommand implements SpiralCommand {
         return Commands.literal(getInfo().name())
                 .requires(ctx -> ctx.getSender().hasPermission(getInfo().permission()))
                 .then(Commands.argument("target", StringArgumentType.word())
+                        .suggests((ctx, builder) -> {
+                            String remaining = builder.getRemaining().toLowerCase();
+                            for (Player p : Bukkit.getOnlinePlayers()) {
+                                if (p.getName().toLowerCase().startsWith(remaining)) {
+                                    builder.suggest(p.getName());
+                                }
+                            }
+                            return builder.buildFuture();
+                        })
                         // perm mute
                         .executes(ctx -> executeMute(ctx.getSource(), StringArgumentType.getString(ctx, "target"), -1))
 
@@ -48,7 +59,7 @@ public class MuteCommand implements SpiralCommand {
         long durationMillis = minutes == -1 ? -1 : minutes * 60L * 1000L;
         MuteManager.getInstance().mute(target.getUniqueId(), durationMillis);
 
-        String timeString = minutes == -1 ? "permanently" : "for " + minutes + " minute(s)";
+        String timeString = minutes == -1 ? "permanently" : "for " + minutes + " minutes";
 
         source.getSender().sendMessage(
                 Component.text("You have muted " + target.getName() + " " + timeString + ".").color(NamedTextColor.GREEN)

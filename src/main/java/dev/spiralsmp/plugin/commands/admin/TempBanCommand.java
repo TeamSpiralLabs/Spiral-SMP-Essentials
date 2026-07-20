@@ -1,20 +1,19 @@
-package dev.spiralsmp.plugin.commands;
+package dev.spiralsmp.plugin.commands.admin;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import dev.spiralsmp.plugin.commands.base.CommandInfo;
+import dev.spiralsmp.plugin.commands.base.SpiralCommand;
 import dev.spiralsmp.plugin.utils.SoundUtil;
 import io.papermc.paper.ban.BanListType;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
 import java.time.Instant;
-import java.util.Date;
 
 @SuppressWarnings("UnstableApiUsage")
 @CommandInfo(
@@ -23,12 +22,20 @@ import java.util.Date;
         permission = "spiralsmp.ban.admin"
 )
 public class TempBanCommand implements SpiralCommand {
-
     @Override
     public LiteralArgumentBuilder<CommandSourceStack> build() {
         return Commands.literal(getInfo().name())
                 .requires(ctx -> ctx.getSender().hasPermission(getInfo().permission()))
                 .then(Commands.argument("target", StringArgumentType.word())
+                        .suggests((ctx, builder) -> {
+                            String remaining = builder.getRemaining().toLowerCase();
+                            for (Player p : Bukkit.getOnlinePlayers()) {
+                                if (p.getName().toLowerCase().startsWith(remaining)) {
+                                    builder.suggest(p.getName());
+                                }
+                            }
+                            return builder.buildFuture();
+                        })
                         .then(Commands.argument("minutes", IntegerArgumentType.integer(1))
                                 // with a reason
                                 .then(Commands.argument("reason", StringArgumentType.greedyString())

@@ -1,4 +1,4 @@
-package dev.spiralsmp.plugin.commands;
+package dev.spiralsmp.plugin.commands.base;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;

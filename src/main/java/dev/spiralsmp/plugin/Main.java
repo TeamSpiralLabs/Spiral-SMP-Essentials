@@ -1,7 +1,7 @@
 package dev.spiralsmp.plugin;
 
-import dev.spiralsmp.plugin.commands.CommandRegister;
-import dev.spiralsmp.plugin.commands.tpa.TpaManager;
+import dev.spiralsmp.plugin.commands.base.CommandRegister;
+import dev.spiralsmp.plugin.commands.teleport.tpa.TpaManager;
 import dev.spiralsmp.plugin.events.EndBlockerListener;
 import dev.spiralsmp.plugin.events.NetherBlockerListener;
 import dev.spiralsmp.plugin.events.PlayerDeathListener;
@@ -69,7 +69,7 @@ public class Main extends JavaPlugin {
 
         new MuteManager(this);
         new MuteManager(this);
-        new WarnManager();
+        new WarnManager(this);
 
         getLogger().info("Spiral-SMP-Essentials enabled");
     }

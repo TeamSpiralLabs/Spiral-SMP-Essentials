@@ -1,7 +1,9 @@
-package dev.spiralsmp.plugin.commands;
+package dev.spiralsmp.plugin.commands.teleport;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import dev.spiralsmp.plugin.commands.base.CommandInfo;
+import dev.spiralsmp.plugin.commands.base.SpiralCommand;
 import dev.spiralsmp.plugin.managers.CommandCooldownManager;
 import dev.spiralsmp.plugin.managers.WarmupManager;
 import dev.spiralsmp.plugin.utils.MessageUtil;
@@ -9,7 +11,6 @@ import dev.spiralsmp.plugin.utils.SoundUtil;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
 @SuppressWarnings("UnstableApiUsage")
 @CommandInfo(

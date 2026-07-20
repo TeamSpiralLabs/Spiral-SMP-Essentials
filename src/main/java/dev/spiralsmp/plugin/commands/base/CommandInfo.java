@@ -1,4 +1,4 @@
-package dev.spiralsmp.plugin.commands;
+package dev.spiralsmp.plugin.commands.base;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

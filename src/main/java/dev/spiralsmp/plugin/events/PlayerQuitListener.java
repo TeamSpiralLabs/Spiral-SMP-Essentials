@@ -1,6 +1,6 @@
 package dev.spiralsmp.plugin.events;
 
-import dev.spiralsmp.plugin.commands.tpa.TpaManager;
+import dev.spiralsmp.plugin.commands.teleport.tpa.TpaManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
