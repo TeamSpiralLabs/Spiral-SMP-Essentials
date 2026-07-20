@@ -18,41 +18,46 @@ public class Main extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
 
-        // 1. Backups
+        // Backups
         if (getConfig().getBoolean("modules.backups", true)) {
             this.backupManager = new BackupManager(this);
             this.backupManager.startAutoBackup();
         }
 
-        // 2. TPA System
+        // TPA System
         TpaManager tpaManager = null;
         if (getConfig().getBoolean("modules.tpa", true)) {
             tpaManager = new TpaManager(this);
             getServer().getPluginManager().registerEvents(new PlayerQuitListener(tpaManager), this);
         }
 
-        // 3. Command Registry
+        // Command Registry
         HelpRegistry helpRegistry = HelpRegistry.getInstance();
         TpaManager finalTpaManager = tpaManager;
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event ->
                 CommandRegister.registerAll(event.registrar(), helpRegistry, finalTpaManager, this.backupManager, this));
 
-        // 4. Combat Log
+        // Combat Log
         if (getConfig().getBoolean("modules.combat-log", true)) {
             getServer().getPluginManager().registerEvents(CombatManager.getInstance(this), this);
         }
 
-        // 5. Tablist
+        // AFK Kicker
+        if (getConfig().getBoolean("modules.afk-kicker", true)) {
+            getServer().getPluginManager().registerEvents(AfkManager.getInstance(this), this);
+        }
+
+        // Tablist
         if (getConfig().getBoolean("modules.tablist", true)) {
             getServer().getPluginManager().registerEvents(TablistManager.getInstance(this), this);
         }
 
-        // 6. End Blocker
+        // End Blocker
         if (getConfig().getBoolean("modules.end-blocker", false)) {
             getServer().getPluginManager().registerEvents(new EndBlockerListener(), this);
         }
 
-        // 7. Nether Blocker
+        // Nether Blocker
         if (getConfig().getBoolean("modules.nether-blocker", false)) {
             getServer().getPluginManager().registerEvents(new NetherBlockerListener(), this);
         }
@@ -77,6 +82,7 @@ public class Main extends JavaPlugin {
 
         TablistManager.shutdown();
         CombatManager.shutdown();
+        AfkManager.shutdown();
         WarmupManager.shutdown();
         CommandCooldownManager.shutdown();
 

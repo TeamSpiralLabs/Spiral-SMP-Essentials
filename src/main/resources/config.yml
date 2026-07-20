@@ -10,6 +10,7 @@ modules:
   home: true
   hub: true
   combat-log: true
+  afk-kicker: true
   tablist: true
   end-blocker: false
   nether-blocker: false
@@ -32,6 +33,11 @@ command-warmups:
 # Combat Log Settings
 # How long in seconds should commands be disabled after a player takes damage
 combat-cooldown-seconds: 10
+
+# AFK Settings
+afk:
+  # How long in minutes before a player is kicked for inactivity
+  kick-minutes: 15
 
 # RTP Settings
 rtp:
